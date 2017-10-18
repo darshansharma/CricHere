@@ -2,7 +2,9 @@ package test;
 
 import java.io.IOException;
 import org.jsoup.*;
-import org.jsoup.nodes.Document;
+import java.awt.*;
+import java.awt.TrayIcon.MessageType;
+import java.util.concurrent.TimeUnit;
 
 class CricAsk {
 
@@ -13,17 +15,18 @@ class CricAsk {
         this.apikey = apikey;
     }
 
-    public void getMatchDetails() throws IOException {
+    public String getMatchDetails() throws IOException {
         String doc = Jsoup.connect("http://cricapi.com/api/matchCalendar?apikey=" + apikey).header("Accept", "text/javascript").ignoreContentType(true).execute().body();
         //System.out.println(doc);
-        String cname = "Pakistan"; //Write your country name here
+        String cname = "BanglaDesh"; //Write your country name here
+        //cname = cname.toLowerCase();
         String cname1 = cname + " v"; // 1st possiblity of your country in JSON data
         String cname2 = "v ".concat(cname); // 2nd possiblity of your country name in JSON data        
-        String matchdetail = null;
+        String matchdetail;
         StringBuilder sb = new StringBuilder();
         StringBuilder sb2 = new StringBuilder();
         char cname_array[] = new char[10000];
-        int cindex = 0; ////set country position from json in local variable
+        int cindex; ////set country position from json in local variable
         int cindex1 = 0; // cindex 1 for cname1 
         int cindex2 = 0; // cindex 2 for cname2
         if (doc.toLowerCase().contains(cname1.toLowerCase())) {
@@ -36,7 +39,7 @@ class CricAsk {
         }
         if (cindex1 > cindex2) {
             cindex = cindex2;
-            int tempIndex = 0;
+            int tempIndex;
             tempIndex = doc.indexOf("name", cindex - 15);
             //System.out.println("TEMP INDEX: " + tempIndex);
             tempIndex += 7;
@@ -58,28 +61,74 @@ class CricAsk {
         unique_id = sb2.toString();
         unique_id = unique_id.replace("\"", "");
         unique_id = unique_id.replace(",", "");
-        System.out.println("Match Unique ID : " + unique_id);
+        //System.out.println("Match Unique ID : " + unique_id);
+        return matchdetail;
     }
 
-    public void getLiveMatchStatistic() throws IOException {
+    public String getLiveMatchStatistic() throws IOException {
+        String stat;
+        String score;
         if (unique_id.equalsIgnoreCase("will generate 1-2 days before match")) {
             System.out.println("SORRY MATCH HAS NOT STARTED YET");
+            stat = "SORRY MATCH HAS NOT STARTED YET";
         } else {
             String res = Jsoup.connect("http://cricapi.com/api/cricketScore?apikey=" + apikey + "&unique_id=" + unique_id).header("Accept", "text/javascript").ignoreContentType(true).execute().body();
             System.out.println(res);
+            stat = res;
         }
+        return stat;
     }
 
+    public String getUniqueId(){
+        return unique_id;
+    }
 }
 
 public class Test {
+    
+    static void callSystemTray(String matchTitle, String score) throws AWTException, InterruptedException{
+        if(System.getProperty("os.name").toLowerCase().contains("win")){
+            if(SystemTray.isSupported()){
+                SystemTray tray = SystemTray.getSystemTray();
+                Image image = Toolkit.getDefaultToolkit().createImage("icon.png");
+                TrayIcon trayIcon = new TrayIcon(image, "Tray Demo");
+                trayIcon.setImageAutoSize(true);
+                trayIcon.setToolTip("System tray icon demo");
+                tray.add(trayIcon);
+                trayIcon.displayMessage(matchTitle, score, MessageType.INFO);                                
+            }
+        }
+    
+    }
 
     public static void main(String[] args) throws Exception {
         String apikey = "0RKpiKRCFQPUYCGiFXA24UvDiRW2";
-        CricAsk ca = new CricAsk();
+        CricAsk ca = new CricAsk();        
         ca.setApiKey(apikey);
         ca.getMatchDetails();
         ca.getLiveMatchStatistic();
+        String matchTitle = ca.getMatchDetails();
+        StringBuilder sb = new StringBuilder();        
+        for(int i=0; i<matchTitle.indexOf("at"); i++){
+            sb.append(matchTitle.charAt(i));
+        }
+        matchTitle = sb.toString();
+        if(!ca.getUniqueId().equals("will generate 1-2 days before match")){       
+            while(!ca.getUniqueId().equals("will generate 1-2 days before match")){       
+                StringBuilder sb2 = new StringBuilder();
+                String score = ca.getLiveMatchStatistic();
+                for(int i=score.indexOf("score")+8; i<score.indexOf("\"",score.indexOf("score")+9); i++){
+                    sb2.append(score.charAt(i));
+                }score = sb2.toString();score = score.replace("*", "");
+                System.out.println(score);
+                callSystemTray(matchTitle,score);
+                TimeUnit.SECONDS.sleep(120); //set Time here. Give time in seconds
+                }
+        }else{
+            callSystemTray("NEXT CRICKET MATCH", ca.getMatchDetails());
+           //System.exit(1);
+        }
 
     }
+    
 }
