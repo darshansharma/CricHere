@@ -14,38 +14,56 @@ class CricAsk {
     public void setApiKey(String apikey) {
         this.apikey = apikey;
     }
-
+    public int getMin(int x, int y){
+        if(x > y){
+            return y;
+        }
+        else{
+            return x;
+        }
+    }
     public String getMatchDetails() throws IOException {
         String doc = Jsoup.connect("http://cricapi.com/api/matchCalendar?apikey=" + apikey).header("Accept", "text/javascript").ignoreContentType(true).execute().body();
         //System.out.println(doc);
-        String cname = "BanglaDesh"; //Write your country name here
+        String cname = "South Africa"; //Write your country name here
         //cname = cname.toLowerCase();
-        String cname1 = cname + " v"; // 1st possiblity of your country in JSON data
-        String cname2 = "v ".concat(cname); // 2nd possiblity of your country name in JSON data        
+        String cname1 = cname + " v"; System.out.println(cname1);// 1st possiblity of your country in JSON data
+        String cname2 = "v "+ cname; System.out.println(cname2);// 2nd possiblity of your country name in JSON data        
         String matchdetail;
         StringBuilder sb = new StringBuilder();
         StringBuilder sb2 = new StringBuilder();
         char cname_array[] = new char[10000];
-        int cindex; ////set country position from json in local variable
+        int cindex=0; ////set country position from json in local variable
         int cindex1 = 0; // cindex 1 for cname1 
         int cindex2 = 0; // cindex 2 for cname2
+        int tempIndex;
         if (doc.toLowerCase().contains(cname1.toLowerCase())) {
             cindex1 = doc.indexOf(cname1);
-            //System.out.println(cindex1);            
-        }
+                        
+        }else{cindex1=-99;}System.out.println("CINDEX1 "+cindex1);
         if (doc.toLowerCase().contains(cname2.toLowerCase())) {
             cindex2 = doc.indexOf(cname2);
-            //System.out.println(cindex2);            
-        }
-        if (cindex1 > cindex2) {
-            cindex = cindex2;
-            int tempIndex;
-            tempIndex = doc.indexOf("name", cindex - 15);
+                        
+        }else{cindex2=-99;}System.out.println("CINDEX2 "+cindex2);
+        if (cindex1==-99 && cindex2!=-99) {
+            cindex = cindex2;            
+            tempIndex = doc.indexOf("name", cindex - 25);
             //System.out.println("TEMP INDEX: " + tempIndex);
             tempIndex += 7;
             cindex = tempIndex;
-        } else {
+        } else if(cindex2==-99 && cindex1!=-99) {
             cindex = cindex1;
+            tempIndex = doc.indexOf("name", cindex - 25);
+            //System.out.println("TEMP INDEX: " + tempIndex);
+            tempIndex += 7;
+            cindex = tempIndex;
+            
+        }else{
+            cindex = getMin(cindex1, cindex2);
+            tempIndex = doc.indexOf("name", cindex - 25);
+            //System.out.println("TEMP INDEX: " + tempIndex);
+            tempIndex += 7;
+            cindex = tempIndex;
         }
         for (int i = cindex; i < doc.indexOf("}", cindex); i++) {
             sb.append(doc.charAt(i));
