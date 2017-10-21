@@ -21,7 +21,7 @@ to run the file.
 You can set your country or any other country name to get their live score. Just go to the line number 21 of src/Test.java file and set the cname variable with your country name. 
 
 ## API used
-API used is from cricapi. Know more about it at - http://www.cricapi.com/
+API used is cricapi. Know more about it at - http://www.cricapi.com/
 
 ## Libraries Used
 * [Jsoup](https://jsoup.org/download) - Download and read about Jsoup here
