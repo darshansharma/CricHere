@@ -32,5 +32,8 @@ Feel free to contribute. I am always looking for your pull requests and I want y
 ## License
 This project is licensed under the GPU License v3.0 - see the [LICENSE](LICENSE) file for details.
 
+## TO-DO List
+1. Support for Linux system.
+
 *Screenshots of CricHere working will be posted soon.*
 
