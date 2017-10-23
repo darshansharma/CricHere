@@ -1,10 +1,11 @@
+![](images/cricimage1.jpg?raw=true)
+(Image Source: Google Images)
+
 # CricHere
 Now get score of live matches as a notification. Don't need to go anywhere just do your work and get updated with the live score.
 
 ## Getting Started
 CricHere is made in Java using Jsoup library and REST API. CricHere will show you a small notification of live cricket score. The advantage of using CricHere is that you can continue with the work which you are doing and side by side you will get updated with the world of cricket. 
-
-![](images/cricimage1.jpg?raw=true)
 
 ### Prerequistes
 You must have JDK installed in your system to run this project. I used NetBeans on windows to make it. However you can run the project from command line also.
