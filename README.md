@@ -38,5 +38,8 @@ This project is licensed under the GPU License v3.0 - see the [LICENSE](LICENSE)
 ## TO-DO List
 1. Support for Linux system.
 
-*Screenshots of CricHere working will be posted soon.*
-
+## Screenshots
+![](images/toolbar-image.jpg?raw=true)
+![](images/desktop1.jpg?raw=true)
+![](images/toolbar2.jpg?raw=true)
+![](images/desktop3.jpg?raw=true)
