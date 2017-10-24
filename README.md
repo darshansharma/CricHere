@@ -39,7 +39,7 @@ This project is licensed under the GPU License v3.0 - see the [LICENSE](LICENSE)
 1. Support for Linux system.
 
 ## Screenshots
-![1](images/toolbar-image.jpg?raw=true)
-![2](images/desktop1.jpg?raw=true)
-![3](images/toolbar2.jpg?raw=true)
-![4](images/desktop3.jpg?raw=true)
+![](images/toolbar-image.png?raw=true)
+![](images/desktop1.png?raw=true)
+![](images/toolbar2.png?raw=true)
+![](images/desktop3.png?raw=true)
