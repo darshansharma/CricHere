@@ -5,6 +5,13 @@ import org.jsoup.*;
 import java.awt.*;
 import java.awt.TrayIcon.MessageType;
 import java.util.concurrent.TimeUnit;
+import com.nitido.utils.toaster.Toaster;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.File;
+import java.util.Timer;
+import javax.imageio.ImageIO;
+
 
 class CricAsk {
 
@@ -27,8 +34,8 @@ class CricAsk {
         //System.out.println(doc);
         String cname = "South Africa"; //Write your country name here
         //cname = cname.toLowerCase();
-        String cname1 = cname + " v"; System.out.println(cname1);// 1st possiblity of your country in JSON data
-        String cname2 = "v "+ cname; System.out.println(cname2);// 2nd possiblity of your country name in JSON data        
+        String cname1 = cname + " v"; //System.out.println(cname1);  // 1st possiblity of your country in JSON data
+        String cname2 = "v "+ cname; //System.out.println(cname2);  // 2nd possiblity of your country name in JSON data        
         String matchdetail;
         StringBuilder sb = new StringBuilder();
         StringBuilder sb2 = new StringBuilder();
@@ -40,11 +47,11 @@ class CricAsk {
         if (doc.toLowerCase().contains(cname1.toLowerCase())) {
             cindex1 = doc.indexOf(cname1);
                         
-        }else{cindex1=-99;}System.out.println("CINDEX1 "+cindex1);
+        }else{cindex1=-99;}//System.out.println("CINDEX1 "+cindex1);
         if (doc.toLowerCase().contains(cname2.toLowerCase())) {
             cindex2 = doc.indexOf(cname2);
                         
-        }else{cindex2=-99;}System.out.println("CINDEX2 "+cindex2);
+        }else{cindex2=-99;}//System.out.println("CINDEX2 "+cindex2);
         if (cindex1==-99 && cindex2!=-99) {
             cindex = cindex2;            
             tempIndex = doc.indexOf("name", cindex - 25);
@@ -71,7 +78,7 @@ class CricAsk {
 
         matchdetail = sb.toString();
         matchdetail = matchdetail.replaceAll("\"", "");
-        System.out.println(matchdetail);
+        //System.out.println(matchdetail);
         cindex = cindex - 70;
         for (int i = doc.indexOf("unique_id", cindex) + 11; i < doc.indexOf("name", cindex); i++) {
             sb2.append(doc.charAt(i));
@@ -102,9 +109,11 @@ class CricAsk {
     }
 }
 
-public class Test {
+public class Test{
     
-    static void callSystemTray(String matchTitle, String score) throws AWTException, InterruptedException{
+    
+ 
+    static void callSystemTray(final String matchTitle, final String score) throws AWTException, InterruptedException, IOException{
         if(System.getProperty("os.name").toLowerCase().contains("win")){
             if(SystemTray.isSupported()){
                 SystemTray tray = SystemTray.getSystemTray();
@@ -115,8 +124,40 @@ public class Test {
                 tray.add(trayIcon);
                 trayIcon.displayMessage(matchTitle, score, MessageType.INFO);                                
             }
+            else{
+                System.out.println("Sorry, Your System does not support toolbar notification. :(");
+            }
         }
+        else if((System.getProperty("os.name").toLowerCase().contains("lin"))){
+           if(SystemTray.isSupported()){
+               System.out.println(score);
+                final PopupMenu popup = new PopupMenu();
+                
+                Image img = ImageIO.read(new File(System.getProperty("user.dir")+"/images/crichere.png"));
+                final TrayIcon trayIcon = new TrayIcon(img, "tray icon");
+                final SystemTray tray = SystemTray.getSystemTray();
+                
+                 // Create a pop-up menu components
+                MenuItem aboutItem = new MenuItem(score);                                
+                
+                //Add components to pop-up menu
+                popup.add(aboutItem);                                
+                trayIcon.setPopupMenu(popup);
+                
+                try {
+                    tray.add(trayIcon);
+                    trayIcon.displayMessage(matchTitle,score,TrayIcon.MessageType.INFO);
+                    
+                } catch (AWTException e) {
+                    System.out.println("TrayIcon could not be added.");
+                }
+               
+           }
+           else{
+               System.out.println("Sorry, Your System does not support toolbar notification. :(");
+           }
     
+         }
     }
 
     public static void main(String[] args) throws Exception {
