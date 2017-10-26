@@ -9,8 +9,10 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.util.concurrent.TimeUnit;
 import java.io.File;
+import java.net.URL;
 import javax.imageio.ImageIO;
 import javax.swing.*;
+
 
 
 class CricHere extends JFrame{
@@ -32,13 +34,15 @@ class CricHere extends JFrame{
         //BufferedImage myImage = new BufferedImage(in.getWidth(null), in.getHeight(null), BufferedImage.TYPE_INT_RGB);
         
         final JLabel label_selC = new JLabel();
-        final JLabel label_img = new JLabel(new ImageIcon(System.getProperty("user.dir")+"/images/crichere.png"));
+        System.out.println(System.getProperty("user.dir"));
+        final JLabel label_img = new JLabel(new ImageIcon(System.getProperty("user.dir")+"/src/Images/crichere.png"));
+        
         final JLabel label_title = new JLabel();
         //field.setSize(50, 50);
         label_selC.setLocation(27, 20);
         label_selC.setText(" Select Country ");
         label_title.setFont(new java.awt.Font("Sans Serif", 1, 18)); // NOI18N
-        label_title.setText("         CricHere");
+        label_title.setText("            CricHere");
         label_title.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
         
         
@@ -54,15 +58,14 @@ class CricHere extends JFrame{
                         .addGap(142, 142, 142)
                         .addComponent(label_title, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(63, 63, 63)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(label_img, javax.swing.GroupLayout.PREFERRED_SIZE, 457, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(23, 23, 23)
-                                .addComponent(label_selC, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(comboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(66, Short.MAX_VALUE))
+                        .addGap(86, 86, 86)
+                        .addComponent(label_selC, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(comboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(61, 61, 61)
+                        .addComponent(label_img, javax.swing.GroupLayout.PREFERRED_SIZE, 457, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(68, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -73,10 +76,10 @@ class CricHere extends JFrame{
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(comboBox)
                     .addComponent(label_selC, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(label_img, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(30, 30, 30)
+                .addComponent(label_img, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
+
         pack();
         for(String x: countries){
             comboBox.addItem(x);
@@ -225,8 +228,10 @@ public class Test{
                System.out.println(score);
                 final PopupMenu popup = new PopupMenu();
                 
-                Image img = ImageIO.read(new File(System.getProperty("user.dir")+"/images/crichere.png"));
-                final TrayIcon trayIcon = new TrayIcon(img, "tray icon");
+                Image img = Toolkit.getDefaultToolkit().getImage(System.getProperty("user.dir")+"/src/Images/crichere.png");
+
+                //Image img = ImageIO.read(new File(System.getProperty("user.dir")+"/src/images/crichere.png"));
+                final TrayIcon trayIcon = new TrayIcon(img, "CricHere", popup);
                 final SystemTray tray = SystemTray.getSystemTray();
                 
                  // Create a pop-up menu components
