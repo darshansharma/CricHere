@@ -4,20 +4,103 @@ import java.io.IOException;
 import org.jsoup.*;
 import java.awt.*;
 import java.awt.TrayIcon.MessageType;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.util.concurrent.TimeUnit;
-import com.nitido.utils.toaster.Toaster;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.File;
-import java.util.Timer;
 import javax.imageio.ImageIO;
+import javax.swing.*;
 
 
-class CricAsk {
-
+class CricHere extends JFrame{
     String apikey;
     String unique_id;
+    String cname;
+    String[] countries = { "Australia", "England", "New Zealand", "India", "Pakistan", "Sri Lanka", "Bangladesh","West Indies", "South Africa"};
+    public CricHere(){
+        initialize();
+    }
+    private void initialize(){
+        
+        //setSize(600, 600);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        //BufferedImage myImage = new BufferedImage(in.getWidth(null), in.getHeight(null), BufferedImage.TYPE_INT_RGB);
+        
+        final JLabel label_selC = new JLabel();
+        final JLabel label_img = new JLabel(new ImageIcon(System.getProperty("user.dir")+"/images/crichere.png"));
+        final JLabel label_title = new JLabel();
+        //field.setSize(50, 50);
+        label_selC.setLocation(27, 20);
+        label_selC.setText(" Select Country ");
+        label_title.setFont(new java.awt.Font("Sans Serif", 1, 18)); // NOI18N
+        label_title.setText("         CricHere");
+        label_title.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+        
+        
+        JComboBox comboBox = new JComboBox();
+        comboBox.setEditable(false);        
+        comboBox.setLocation(50, 20);
+        
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(142, 142, 142)
+                        .addComponent(label_title, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(63, 63, 63)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(label_img, javax.swing.GroupLayout.PREFERRED_SIZE, 457, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(23, 23, 23)
+                                .addComponent(label_selC, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(comboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(66, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(label_title, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(comboBox)
+                    .addComponent(label_selC, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(label_img, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        pack();
+        for(String x: countries){
+            comboBox.addItem(x);
+        }                        
+        comboBox.addActionListener(new ActionListener() {
 
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JComboBox comboBox = (JComboBox)e.getSource();
+                Object selected = comboBox.getSelectedItem();
+                String x = selected.toString();
+                System.out.println(x);
+                cname = x;
+                comboBox.setEnabled(false);
+                
+            }
+        });
+        
+        getContentPane().add(comboBox);
+        getContentPane().add(label_selC);
+    
+    }
+    
+   
     public void setApiKey(String apikey) {
         this.apikey = apikey;
     }
@@ -29,10 +112,19 @@ class CricAsk {
             return x;
         }
     }
+    public void setCountryName(String x){
+        cname = x;
+    }
+    
+    String getCountryName(){
+        return cname;
+    }
     public String getMatchDetails() throws IOException {
+     
         String doc = Jsoup.connect("http://cricapi.com/api/matchCalendar?apikey=" + apikey).header("Accept", "text/javascript").ignoreContentType(true).execute().body();
         //System.out.println(doc);
-        String cname = "South Africa"; //Write your country name here
+        
+        //cname = getCountryName(); //Write your country name here
         //cname = cname.toLowerCase();
         String cname1 = cname + " v"; //System.out.println(cname1);  // 1st possiblity of your country in JSON data
         String cname2 = "v "+ cname; //System.out.println(cname2);  // 2nd possiblity of your country name in JSON data        
@@ -111,7 +203,6 @@ class CricAsk {
 
 public class Test{
     
-    
  
     static void callSystemTray(final String matchTitle, final String score) throws AWTException, InterruptedException, IOException{
         if(System.getProperty("os.name").toLowerCase().contains("win")){
@@ -126,6 +217,7 @@ public class Test{
             }
             else{
                 System.out.println("Sorry, Your System does not support toolbar notification. :(");
+                JOptionPane.showMessageDialog(null, "Sorry, Your System does not support toolbar notification. :(");
             }
         }
         else if((System.getProperty("os.name").toLowerCase().contains("lin"))){
@@ -155,14 +247,20 @@ public class Test{
            }
            else{
                System.out.println("Sorry, Your System does not support toolbar notification. :(");
+               JOptionPane.showMessageDialog(null, "Sorry, Your System does not support toolbar notification. :(");
            }
     
          }
     }
 
     public static void main(String[] args) throws Exception {
+        
         String apikey = "0RKpiKRCFQPUYCGiFXA24UvDiRW2";
-        CricAsk ca = new CricAsk();        
+        CricHere ca = new CricHere();
+        //this.pack();
+        ca.setVisible(true);
+        TimeUnit.SECONDS.sleep(10);
+        //ca.setCountryName(cname);
         ca.setApiKey(apikey);
         ca.getMatchDetails();
         ca.getLiveMatchStatistic();
@@ -181,7 +279,7 @@ public class Test{
                 }score = sb2.toString();score = score.replace("*", "");
                 System.out.println(score);
                 callSystemTray(matchTitle,score);
-                TimeUnit.SECONDS.sleep(120); //set Time here. Give time in seconds
+                TimeUnit.SECONDS.sleep(180); //set Time here. Give time in seconds
                 }
         }else{
             callSystemTray("NEXT CRICKET MATCH", ca.getMatchDetails());
