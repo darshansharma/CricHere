@@ -6,11 +6,8 @@ import java.awt.*;
 import java.awt.TrayIcon.MessageType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 import java.util.concurrent.TimeUnit;
-import java.io.File;
 import java.net.URL;
-import javax.imageio.ImageIO;
 import javax.swing.*;
 
 
@@ -35,8 +32,8 @@ class CricHere extends JFrame{
         
         final JLabel label_selC = new JLabel();
         System.out.println(System.getProperty("user.dir"));
-        final JLabel label_img = new JLabel(new ImageIcon(System.getProperty("user.dir")+"/src/Images/crichere.png"));
-        
+        final JLabel label_img = new JLabel(new ImageIcon(getClass().getClassLoader().getResource("Images/crichere.png")));
+        //final JLabel label_img = new JLabel(new ImageIcon(System.getProperty("user.dir")+"/Images/crichere.png"));
         final JLabel label_title = new JLabel();
         //field.setSize(50, 50);
         label_selC.setLocation(27, 20);
@@ -135,9 +132,9 @@ class CricHere extends JFrame{
         StringBuilder sb = new StringBuilder();
         StringBuilder sb2 = new StringBuilder();
         char cname_array[] = new char[10000];
-        int cindex=0; ////set country position from json in local variable
-        int cindex1 = 0; // cindex 1 for cname1 
-        int cindex2 = 0; // cindex 2 for cname2
+        int cindex; ////set country position from json in local variable
+        int cindex1; // cindex 1 for cname1 
+        int cindex2; // cindex 2 for cname2
         int tempIndex;
         if (doc.toLowerCase().contains(cname1.toLowerCase())) {
             cindex1 = doc.indexOf(cname1);
@@ -206,8 +203,8 @@ class CricHere extends JFrame{
 
 public class Test{
     
- 
-    static void callSystemTray(final String matchTitle, final String score) throws AWTException, InterruptedException, IOException{
+    
+     static void callSystemTray(final String matchTitle, final String score) throws AWTException, InterruptedException, IOException{
         if(System.getProperty("os.name").toLowerCase().contains("win")){
             if(SystemTray.isSupported()){
                 SystemTray tray = SystemTray.getSystemTray();
@@ -228,8 +225,10 @@ public class Test{
                System.out.println(score);
                 final PopupMenu popup = new PopupMenu();
                 
-                Image img = Toolkit.getDefaultToolkit().getImage(System.getProperty("user.dir")+"/src/Images/crichere.png");
-
+                
+                URL url = Test.class.getResource("Images/edit-cut.png");
+                Image img = Toolkit.getDefaultToolkit().getImage(url);
+    
                 //Image img = ImageIO.read(new File(System.getProperty("user.dir")+"/src/images/crichere.png"));
                 final TrayIcon trayIcon = new TrayIcon(img, "CricHere", popup);
                 final SystemTray tray = SystemTray.getSystemTray();
@@ -264,7 +263,7 @@ public class Test{
         CricHere ca = new CricHere();
         //this.pack();
         ca.setVisible(true);
-        TimeUnit.SECONDS.sleep(10);
+        TimeUnit.SECONDS.sleep(12);
         //ca.setCountryName(cname);
         ca.setApiKey(apikey);
         ca.getMatchDetails();
