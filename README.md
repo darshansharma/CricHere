@@ -10,10 +10,14 @@ CricHere is made in Java using Jsoup library and REST API. CricHere will show yo
 ### Prerequistes
 You must have JDK installed in your system to run this project. I used NetBeans on windows to make it. However you can run the project from command line also.
 
+### Download
+Download the jar file and you don't need IDE (though java is needed) to run project.
+[Download](https://drive.google.com/file/d/0BwiWKez_FI_hcHpnVmkzNXdGZHM/view)
+
 ### Installation
 1. Download the copy of project in your system.
-2. Run the project in any IDE. If you don't use one then follow the below steps.
-2. SET the environment variable of JDK if you didn't set them till now.
+2. Run the project in any IDE. If you don't use one then follow the steps below.
+2. SET the environment variables if you didn't set them till now.
 3. Move to src/Test.java and run it with command 
 `javac Test.java`
 4. Now use command
@@ -26,17 +30,23 @@ You can set your country or any other country name to get their live score. Just
 ## API used
 API used is cricapi. Know more about it at - http://www.cricapi.com/
 
+## Developers
+You need to change the apikey by making account on the site [cricapi](http://www.cricapi.com/) and use your apikey in the project.
+
 ## Libraries Used
 * [Jsoup](https://jsoup.org/download) - Download and read about Jsoup here
 
 ## Contributing
-Feel free to contribute. I am always looking for your pull requests and I want you to help CricHere to make it bigger and beter.
+Feel free to contribute. I am always looking for your pull requests and I want you to help me in making this program bigger and beter.
 
 ## License
 This project is licensed under the GPU License v3.0 - see the [LICENSE](LICENSE) file for details.
 
 ## TO-DO List
-1. Support for Linux system.
+1. Support for Linux system.  [ DONE ]
+2. Make a JAR file. [ DONE ]
+3. Create a button to launch score in UI.
+4. Remove 10 sec time interval at the begining. 
 
 ## Screenshots
 ![](images/InputIMAGE.png?raw=true)   
