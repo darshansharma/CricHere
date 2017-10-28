@@ -39,9 +39,13 @@ This project is licensed under the GPU License v3.0 - see the [LICENSE](LICENSE)
 1. Support for Linux system.
 
 ## Screenshots
-![](images/inputIMAGE.png?raw=true)
-Windows - 
+![](images/InputIMAGE.png?raw=true)   
+
+Windows -    
+
 ![](images/toolbar2.png?raw=true)
-![](images/desktop3.png?raw=true)
-Ubuntu - 
+![](images/desktop3.png?raw=true)   
+
+Ubuntu -    
+
 ![](images/ubuntu-notif-crichere.png?raw=true)
